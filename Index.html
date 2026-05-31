@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Brolet - Infinite Marketplace</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #090d16;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            -webkit-user-select: none;
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        /* 🎬 1. ICONIC SPLIT START SCREEN */
+        #start-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            display: flex;
+            z-index: 2000;
+            transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .start-left {
+            width: 45%;
+            background: linear-gradient(135deg, #4c1d95, #6d28d9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 50px;
+            text-align: left;
+            box-sizing: border-box;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+        .start-right {
+            width: 55%;
+            background: #fb923c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .main-title {
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: white;
+            margin: 0 0 10px 0;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .main-subtitle {
+            font-size: 1.8rem;
+            color: #ddd6fe;
+            margin: 0 0 40px 0;
+            font-weight: 400;
+            line-height: 1.2;
+        }
+        .get-started-btn {
+            background: white;
+            color: #6d28d9;
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .get-started-btn:active {
+            transform: scale(0.96);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        /* Grid showcase of moving emojis on the right side */
+        .blook-showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            font-size: 4rem;
+            transform: rotate(-10deg);
+            animation: floatingGrid 6s ease-in-out infinite;
+        }
+        .showcase-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 18px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 90px;
+            height: 90px;
+        }
+
+        /* 🎬 2. Brolet Account Setup Screen */
+        #auth-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, #111827, #311042);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+        .auth-card {
+            background: rgba(24, 24, 37, 0.85);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid rgba(168, 85, 247, 0.2);
+            width: 85%;
+            max-width: 380px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background: #0f172a;
+            border: 2px solid #475569;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .input-group input:focus { border-color: #a855f7; }
+        .action-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .primary-btn {
+            background: linear-gradient(45deg, #7c3aed, #a855f7);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .secondary-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* 🟢 Live Active Players Counter Badge */
+        .live-counter-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #34d399;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            animation: beacon 1.8s infinite ease-in-out;
+        }
+
+        /* 🏠 3. Main Dashboard Room */
+        .container {
+            max-width: 700px;
+            margin: 15px auto;
+            background: rgba(15, 23, 42, 0.85);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-sizing: border-box;
+            position: relative;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            background: rgba(0,0,0,0.4);
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-top: 35px;
+        }
+        .blook { font-size: 4rem; margin: 10px 0; }
+        
+        .wheel-box {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .spin-btn {
+            background: linear-gradient(45deg, #10b981, #059669);
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            width: 85%;
+        }
+        .wheel-status {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fbbf24;
+            margin-top: 8px;
+            min-height: 24px;
+        }
+
+        .marketplace-header {
+            font-size: 1.4rem;
+            color: #a855f7;
+            margin: 20px 0 10px 0;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        .pack-card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 12px;
+            border: 3px solid #475569;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .pack-title { font-size: 1rem; font-weight: bold; }
+        .pack-art { font-size: 2rem; margin: 3px 0; }
+        .pack-cost { font-size: 0.85rem; color: #cbd5e1; margin-bottom: 8px; }
+        .buy-p-btn {
+            background: #7c3aed; color: white; border: none;
+            padding: 8px 14px; font-size: 0.85rem; border-radius: 20px;
+            font-weight: bold; cursor: pointer; width: 90%;
+        }
+
+        /* Pack Aesthetic Themes */
+        .pack-space { border-color: #8b5cf6; background: linear-gradient(180deg, #1e1b4b, #0f172a); }
+        .pack-medieval { border-color: #b45309; background: linear-gradient(180deg, #451a03, #0f172a); }
+        .pack-cafe { border-color: #f59e0b; background: linear-gradient(180deg, #78350f, #0f172a); }
+        .pack-bot { border-color: #64748b; background: linear-gradient(180deg, #334155, #0f172a); }
+        .pack-dino { border-color: #10b981; background: linear-gradient(180deg, #064e3b, #0f172a); }
+        .pack-aquatic { border-color: #0ea5e9; background: linear-gradient(180deg, #0c4a6e, #0f172a); }
+        .pack-safari { border-color: #84cc16; background: linear-gradient(180deg, #365314, #0f172a); }
+        .pack-tropical { border-color: #f43f5e; background: linear-gradient(180deg, #4c0519, #0f172a); }
+        .pack-rainbow { border-color: #ec4899; background: linear-gradient(180deg, #581c87, #0f172a); }
+        .pack-winter { border-color: #38bdf8; background: linear-gradient(180deg, #134e4a, #0f172a); }
